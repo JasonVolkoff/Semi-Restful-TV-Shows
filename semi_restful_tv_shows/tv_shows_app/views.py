@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Show, Network
+from .models import Show
 # Create your views here.
 
 
 def shows(request):  # path('shows', views.shows),
     context = {
         "shows": Show.objects.all(),
-        "networks": Network.objects.all()
     }
     return render(request, 'shows.html', context)
 
@@ -17,32 +16,29 @@ def new_show(request):  # path('shows/new', views.new_show),
 
 def create_show(request):  # path('shows/create', views.create_show),
     if request.method == "POST":
-        Show.objects.create(
-            title=request.post["title"],
-            release_date=request.post["releaseDate"]
+        new_show = Show.objects.create(
+            title=request.POST["title"],
+            network=request.POST["network"],
+            release_date=request.POST["releaseDate"],
+            description=request.POST["description"]
         )
-        # check if user input Network exists, then creates one if not existing
-        if not Network.objects.filter(name=request.post["name"]):
-            Network.objects.create(
-                name=request.post["name"]
-            )
-        # establish relationship between Network and Show
-        Show.objects.last.networks.add(
-            Network.objects.filter(name=request.post["name"]))
-    return redirect(f'/show/{Show.objects.last}')
+    return redirect(f'/shows/{new_show.id}')
 
 
-def show_info(request, show_id):  # path('show/<int:id>', views.show_info),
+def show_info(request, id):  # path('shows/<int:id>', views.show_info),
+    context = {
+        "this_show": Show.objects.get(id=id),
+    }
+    return render(request, 'show_info.html', context)
+
+
+def edit_show(request, id):  # path('shows/<int:id>/edit', views.edit_show),
     pass
 
 
-def edit_show(request, show_id):  # path('show/<int:id>/edit', views.edit_show),
+def destroy_show(request, id):  # path('shows/<int:id>/destroy', views.destroy_show),
     pass
 
 
-def destroy_show(request, show_id):  # path('show/<int:id>/destroy', views.destroy_show),
-    pass
-
-
-def update_show(request, show_id):  # path('show/<int:id>/update', views.update_show),
+def update_show(request, id):  # path('shows/<int:id>/update', views.update_show),
     pass
