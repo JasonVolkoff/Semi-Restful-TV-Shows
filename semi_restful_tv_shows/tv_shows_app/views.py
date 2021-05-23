@@ -22,6 +22,7 @@ def create_show(request):  # path('shows/create', views.create_show),
             release_date=request.POST["releaseDate"],
             description=request.POST["description"]
         )
+        new_show.save()
     return redirect(f'/shows/{new_show.id}')
 
 
@@ -33,12 +34,24 @@ def show_info(request, id):  # path('shows/<int:id>', views.show_info),
 
 
 def edit_show(request, id):  # path('shows/<int:id>/edit', views.edit_show),
-    pass
+    context = {
+        "this_show": Show.objects.get(id=id),
+    }
+    return render(request, 'edit_show.html', context)
 
 
 def destroy_show(request, id):  # path('shows/<int:id>/destroy', views.destroy_show),
-    pass
+    delete_show = Show.objects.get(id=id)
+    delete_show.delete()
+    return redirect('/shows')
 
 
 def update_show(request, id):  # path('shows/<int:id>/update', views.update_show),
-    pass
+    if request.method == "POST":
+        update_show = Show.objects.get(id=id)
+        update_show.title = request.POST["title"]
+        update_show.network = request.POST["network"]
+        update_show.release_date = request.POST["releaseDate"]
+        update_show.description = request.POST["description"]
+        update_show.save()
+    return redirect(f'/shows/{id}')

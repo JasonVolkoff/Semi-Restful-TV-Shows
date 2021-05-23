@@ -13,8 +13,27 @@
 </head>
 
 <body>
-    <div class="container">
-        test
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-10 offset-sm-1 mb-3">
+                <a class="float-right" href="/shows">Go Back</a>
+                <h1>TV Show #{{ this_show.id }}</h1>
+                <div class="mt-5">
+                    <p><b>Title:</b> {{ this_show.title }}</p>
+                    <p><b>Network:</b> {{ this_show.network }}</p>
+                    <p><b>Release Date:</b> {{ this_show.release_date }}</p>
+                    <p><b>Description:</b> {{ this_show.description }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-sm-10 offset-sm-1">
+                <p><b>Last Updated: </b>{{ this_show.updated_at }}</p>
+                <a href="/shows/{{this_show.id}}/edit">Edit</a> |
+                <a href="/shows/{{this_show.id}}/destroy">Delete</a>
+            </div>
+        </div>
+
     </div>
 </body>
 
