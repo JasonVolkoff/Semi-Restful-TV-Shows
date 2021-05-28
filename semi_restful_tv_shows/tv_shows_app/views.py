@@ -20,7 +20,7 @@ def create_show(request):  # path('shows/create', views.create_show),
     if errors:
         for k, v in errors.items():
             messages.error(request, v)
-        return redirect('/shows/create')
+        return redirect('/shows/new')
     new_show = Show.objects.create(
         title=request.POST['title'],
         network=request.POST['network'],
