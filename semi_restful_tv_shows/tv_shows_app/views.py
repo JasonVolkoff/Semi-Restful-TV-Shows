@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Show
+from django.contrib import messages
 # Create your views here.
 
 
@@ -15,14 +16,17 @@ def new_show(request):  # path('shows/new', views.new_show),
 
 
 def create_show(request):  # path('shows/create', views.create_show),
-    if request.method == "POST":
-        new_show = Show.objects.create(
-            title=request.POST["title"],
-            network=request.POST["network"],
-            release_date=request.POST["releaseDate"],
-            description=request.POST["description"]
-        )
-        new_show.save()
+    errors = Show.objects.basic_validator(request.POST)
+    if errors:
+        for k, v in errors.items():
+            messages.error(request, v)
+        return redirect('/shows/create')
+    new_show = Show.objects.create(
+        title=request.POST['title'],
+        network=request.POST['network'],
+        release_date=request.POST['releaseDate'],
+        description=request.POST['description']
+    )
     return redirect(f'/shows/{new_show.id}')
 
 

@@ -18,6 +18,13 @@
             <div class="col-sm-8 offset-sm-2">
                 <a class="float-right" href="/shows">Go Back</a>
                 <h1 class="text-left mb-4">Add a New Show</h1>
+                {% if messages %}
+                <ul class="messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                </ul>
+                {% endif %}
                 <form action="/shows/create" method="POST">
                     {% csrf_token %}
                     {% comment %} form grid here {% endcomment %}
